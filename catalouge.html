@@ -1,150 +1,244 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>SpiceBlooms Product Catalogue</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-  <style>
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      background-color: #fdfbf9;
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SpiceBlooms Product Catalogue</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #fdfbf9;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            font-weight: 600;
+            color: #d2691e;
+        }
+
+        .product-card {
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 0 8px rgba(0, 0, 0, 0.05);
+            margin-bottom: 2rem;
+        }
+
+        .checkmark {
+            color: green;
+            margin-right: 0.5rem;
+        }
+        back-button {
+      display: inline-flex;
+      align-items: center;
+      padding: 8px 16px;
+      margin-bottom: 20px;
+      color: #5a4e3d;
+      text-decoration: none;
+      font-weight: 500;
+      border-radius: 6px;
+      transition: all 0.3s ease;
+      background-color: rgba(210, 105, 30, 0.1);
+      border: 1px solid rgba(210, 105, 30, 0.2);
     }
-    .section-title {
-      font-size: 2rem;
-      font-weight: 600;
-      color: #d2691e;
+    .back-button:hover {
+      background-color: rgba(210, 105, 30, 0.2);
+      color: #3e3629;
+      text-decoration: none;
     }
-    .product-card {
-      background-color: #fff;
-      border-radius: 10px;
-      padding: 1.5rem;
-      box-shadow: 0 0 8px rgba(0, 0, 0, 0.05);
-      margin-bottom: 2rem;
+    .back-button svg {
+      transition: transform 0.3s ease;
     }
-    .checkmark {
-      color: green;
-      margin-right: 0.5rem;
+    .back-button:hover svg {
+      transform: translateX(-3px);
     }
-  </style>
+    </style>
 </head>
+
 <body>
-  <!-- Back Button -->
-  <a href="products.html" class="d-inline-flex align-items-center mb-4 text-decoration-none text-secondary" style="font-size: 1.1rem;">
-    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-arrow-left me-2" viewBox="0 0 16 16">
-      <path fill-rule="evenodd" d="M15 8a.5.5 0 0 1-.5.5H2.707l3.147 3.146a.5.5 0 0 1-.708.708l-4-4a.5.5 0 0 1 0-.708l4-4a.5.5 0 1 1 .708.708L2.707 7.5H14.5A.5.5 0 0 1 15 8z"/>
-    </svg>
-    Back
-  </a>
+    <div class="container py-5">
+         <a href="products.html" class="back-button">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-arrow-left me-2" viewBox="0 0 16 16">
+          <path fill-rule="evenodd" d="M15 8a.5.5 0 0 1-.5.5H2.707l3.147 3.146a.5.5 0 0 1-.708.708l-4-4a.5.5 0 0 1 0-.708l4-4a.5.5 0 1 1 .708.708L2.707 7.5H14.5A.5.5 0 0 1 15 8z"/>
+        </svg>
+        Back to Products
+      </a>
 
-  <div class="container py-5">
-    <!-- Brand Header -->
-    <div class="text-center mb-5">
-      <h1 class="display-5 fw-bold">SPICE BLOOMS</h1>
-      <p class="lead fst-italic">"Andhra on Your Plate: The Signature Instant Rice Mixes"</p>
     </div>
+    <!-- Back Button -->
+   
+    <div class="container py-5">
+        <!-- Brand Header -->
+        <div class="text-center mb-5">
+            <h1 class="display-5 fw-bold">SPICE BLOOMS</h1>
+            <p class="lead fst-italic">"Andhra on Your Plate: The Signature Instant Rice Mixes"</p>
+        </div>
 
-    <!-- About Section -->
-    <div class="mb-5">
-      <h2 class="section-title">🌿 About Us – The Story Behind Madhuri Spices by SpiceBlooms</h2>
-      <p>
-        At Madhuri Spices, every jar tells a story — of tradition, warmth, and the soulful taste of Andhra kitchens.
-        What began as a humble home kitchen in Visakhapatnam has now blossomed into SpiceBlooms, a heartfelt initiative to bring handcrafted, preservative-free spice blends to modern households.
-      </p>
-      <p>
-        Founded with the inspiration of timeless recipes passed down from mothers and grandmothers, Madhuri Spices was created not just to offer food — but to serve flavor-packed comfort, nutrition, and cultural heritage in every bite.
-      </p>
-      <p>
-        We believe that true taste doesn't need artificial colors or preservatives. That's why we roast and grind all our ingredients in small batches, seal them fresh, and deliver directly from our home to yours — without compromising on purity, hygiene, or authenticity.
-      </p>
-    </div>
+        <!-- About Section -->
+        <div class="mb-5">
+            <h2 class="section-title">🌿 About Us – The Story Behind Madhuri Spices by SpiceBlooms</h2>
+            <p>
+                At Madhuri Spices, every jar tells a story — of tradition, warmth, and the soulful taste of Andhra
+                kitchens.
+                What began as a humble home kitchen in Visakhapatnam has now blossomed into SpiceBlooms, a heartfelt
+                initiative to bring handcrafted, preservative-free spice blends to modern households.
+            </p>
+            <p>
+                Founded with the inspiration of timeless recipes passed down from mothers and grandmothers, Madhuri
+                Spices was created not just to offer food — but to serve flavor-packed comfort, nutrition, and cultural
+                heritage in every bite.
+            </p>
+            <p>
+                We believe that true taste doesn't need artificial colors or preservatives. That's why we roast and
+                grind all our ingredients in small batches, seal them fresh, and deliver directly from our home to yours
+                — without compromising on purity, hygiene, or authenticity.
+            </p>
+        </div>
 
-    <!-- Values -->
-    <div class="mb-5">
-      <h2 class="section-title">🌟 What We Stand For</h2>
-      <ul class="list-unstyled">
-        <li><span class="checkmark">✅</span><strong>Authenticity First</strong> – Traditional Andhra recipes, untouched by shortcuts or commercial fillers.</li>
-        <li><span class="checkmark">✅</span><strong>Pure & Natural Ingredients</strong> – Only real, whole spices — no preservatives, no artificial colors, ever.</li>
-        <li><span class="checkmark">✅</span><strong>Home-Style Preparation</strong> – Hand-roasted and small-batch ground to retain aroma, flavor, and nutrition.</li>
-      </ul>
-    </div>
+        <!-- Values -->
+        <div class="mb-5">
+            <h2 class="section-title">🌟 What We Stand For</h2>
+            <ul class="list-unstyled">
+                <li><span class="checkmark">✅</span><strong>Authenticity First</strong> – Traditional Andhra recipes,
+                    untouched by shortcuts or commercial fillers.</li>
+                <li><span class="checkmark">✅</span><strong>Pure & Natural Ingredients</strong> – Only real, whole
+                    spices — no preservatives, no artificial colors, ever.</li>
+                <li><span class="checkmark">✅</span><strong>Home-Style Preparation</strong> – Hand-roasted and
+                    small-batch ground to retain aroma, flavor, and nutrition.</li>
+            </ul>
+        </div>
 
-    <!-- Product: Masala Karam -->
-    <div class="product-card">
-      <h3 class="h4 mb-3">Masala Karam – "Fragrant Coriander Magic in Every Bite"</h3>
-      <ul class="list-unstyled">
-        <li><span class="checkmark">✅</span>Signature Andhra Heat</li>
-        <li><span class="checkmark">✅</span>Balanced spice with aroma</li>
-        <li><span class="checkmark">✅</span>Perfect for daily curries or special dishes</li>
-        <li><span class="checkmark">✅</span>No preservatives or artificial color</li>
-        <li><span class="checkmark">✅</span>Small-batch roasted & ground</li>
-      </ul>
-      <p><strong>Why You'll Love It:</strong> Add a spoon while cooking curries, gravies, fries, or dal. Also great over hot rice with ghee.</p>
-    </div>
+        <div container py-5>
+        <!-- Product: Masala Karam -->
+        <div class="row align-items-center mb-5">
+            <div class="col-md-7">
+                <div class="product-card h-100">
+                    <h3 class="h4 mb-3">Masala Karam – "Fragrant Coriander Magic in Every Bite"</h3>
+                    <ul class="list-unstyled">
+                        <li><span class="checkmark">✅</span>Signature Andhra Heat</li>
+                        <li><span class="checkmark">✅</span>Balanced spice with aroma</li>
+                        <li><span class="checkmark">✅</span>Perfect for daily curries or special dishes</li>
+                        <li><span class="checkmark">✅</span>No preservatives or artificial color</li>
+                        <li><span class="checkmark">✅</span>Small-batch roasted & ground</li>
+                    </ul>
+                    <p><strong>Why You'll Love It:</strong> Add a spoon while cooking curries, gravies, fries, or dal.
+                        Also great over hot rice with ghee.</p>
+                </div>
+            </div>
+            <div class="col-md-5 text-center">
+                <img src="assets/Img-5.jpeg.jpeg" class="img-fluid rounded shadow" alt="Masala Karam"
+                    style="max-height:260px;object-fit:cover;">
+            </div>
+        </div>
 
-    <!-- Product: Turmeric Powder -->
-    <div class="product-card">
-      <h3 class="h4 mb-3">Turmeric Powder – "Authentic Andhra Spice in Every Pinch"</h3>
-      <ul class="list-unstyled">
-        <li><span class="checkmark">✅</span>Bright Color & Strong Aroma</li>
-        <li><span class="checkmark">✅</span>Hand-ground in small batches</li>
-        <li><span class="checkmark">✅</span>No added color, preservatives, or starch</li>
-        <li><span class="checkmark">✅</span>Supports immunity & digestion</li>
-      </ul>
-      <p><strong>Why You'll Love It:</strong> Add ½ tsp to dals, vegetables, curries, or haldi doodh. Can also be used in skincare routines.</p>
-    </div>
+        <!-- Product: Turmeric Powder -->
+        <div class="row align-items-center mb-5 flex-md-row-reverse">
+            <div class="col-md-7">
+                <div class="product-card h-100">
+                    <h3 class="h4 mb-3">Turmeric Powder – "Authentic Andhra Spice in Every Pinch"</h3>
+                    <ul class="list-unstyled">
+                        <li><span class="checkmark">✅</span>Bright Color & Strong Aroma</li>
+                        <li><span class="checkmark">✅</span>Hand-ground in small batches</li>
+                        <li><span class="checkmark">✅</span>No added color, preservatives, or starch</li>
+                        <li><span class="checkmark">✅</span>Supports immunity & digestion</li>
+                    </ul>
+                    <p><strong>Why You'll Love It:</strong> Add ½ tsp to dals, vegetables, curries, or haldi doodh. Can
+                        also be used in skincare routines.</p>
+                </div>
+            </div>
+            <div class="col-md-5 text-center">
+                <img src="assets/Img-3.jpeg.jpeg" class="img-fluid rounded shadow" alt="Turmeric Powder"
+                    style="max-height:260px;object-fit:cover;">
+            </div>
+        </div>
 
-    <!-- Product: Kandi Podi -->
-    <div class="product-card">
-      <h3 class="h4 mb-3">Kandi Podi – "Traditional Andhra Flavour in Every Spoon"</h3>
-      <ul class="list-unstyled">
-        <li><span class="checkmark">✅</span>Roasted to perfection</li>
-        <li><span class="checkmark">✅</span>Protein-rich, fiber-loaded</li>
-        <li><span class="checkmark">✅</span>Made from premium quality dals and spices</li>
-        <li><span class="checkmark">✅</span>No preservatives, no artificial flavours</li>
-      </ul>
-      <p><strong>Usage:</strong> Mix 2–3 spoons with hot rice and ghee. Great with papad or idli/dosa.</p>
-    </div>
+        <!-- Product: Kandi Podi -->
+        <div class="row align-items-center mb-5">
+            <div class="col-md-7">
+                <div class="product-card h-100">
+                    <h3 class="h4 mb-3">Kandi Podi – "Traditional Andhra Flavour in Every Spoon"</h3>
+                    <ul class="list-unstyled">
+                        <li><span class="checkmark">✅</span>Roasted to perfection</li>
+                        <li><span class="checkmark">✅</span>Protein-rich, fiber-loaded</li>
+                        <li><span class="checkmark">✅</span>Made from premium quality dals and spices</li>
+                        <li><span class="checkmark">✅</span>No preservatives, no artificial flavours</li>
+                    </ul>
+                    <p><strong>Usage:</strong> Mix 2–3 spoons with hot rice and ghee. Great with papad or idli/dosa.</p>
+                </div>
+            </div>
+            <div class="col-md-5 text-center">
+                <img src="assets/Img-4.jpeg.jpeg" class="img-fluid rounded shadow" alt="Kandi Podi"
+                    style="max-height:260px;object-fit:cover;">
+            </div>
+        </div>
 
-    <!-- Product: Dhanya Podi -->
-    <div class="product-card">
-      <h3 class="h4 mb-3">Dhanya Podi – "Fragrant Coriander Magic in Every Bite"</h3>
-      <ul class="list-unstyled">
-        <li><span class="checkmark">✅</span>Digestive and aromatic</li>
-        <li><span class="checkmark">✅</span>Rich in natural coriander oils</li>
-        <li><span class="checkmark">✅</span>Mild spice – perfect for all ages</li>
-        <li><span class="checkmark">✅</span>Roasted and ground in small batches</li>
-        <li><span class="checkmark">✅</span>No preservatives, no color added</li>
-      </ul>
-      <p><strong>Usage:</strong> Mix 2–3 spoons with hot rice and ghee. Perfect with plain rice.</p>
-    </div>
+        <!-- Product: Dhanya Podi -->
+        <div class="row align-items-center mb-5 flex-md-row-reverse">
+            <div class="col-md-7">
+                <div class="product-card h-100">
+                    <h3 class="h4 mb-3">Dhanya Podi – "Fragrant Coriander Magic in Every Bite"</h3>
+                    <ul class="list-unstyled">
+                        <li><span class="checkmark">✅</span>Digestive and aromatic</li>
+                        <li><span class="checkmark">✅</span>Rich in natural coriander oils</li>
+                        <li><span class="checkmark">✅</span>Mild spice – perfect for all ages</li>
+                        <li><span class="checkmark">✅</span>Roasted and ground in small batches</li>
+                        <li><span class="checkmark">✅</span>No preservatives, no color added</li>
+                    </ul>
+                    <p><strong>Usage:</strong> Mix 2–3 spoons with hot rice and ghee. Perfect with plain rice.</p>
+                </div>
+            </div>
+            <div class="col-md-5 text-center">
+                <img src="assets/Img-1.jpeg" class="img-fluid rounded shadow" alt="Dhanya Podi"
+                    style="max-height:260px;object-fit:cover;">
+            </div>
+        </div>
 
-    <!-- Product: Pesara Podi -->
-    <div class="product-card">
-      <h3 class="h4 mb-3">Pesara Podi – "Flavour & Protein in Every Spoon"</h3>
-      <ul class="list-unstyled">
-        <li><span class="checkmark">✅</span>Light on the stomach, high on taste</li>
-        <li><span class="checkmark">✅</span>Protein-packed with moong dal & chana dal</li>
-        <li><span class="checkmark">✅</span>Great for kids and elders</li>
-        <li><span class="checkmark">✅</span>Clean, small-batch roasting</li>
-        <li><span class="checkmark">✅</span>No preservatives or color</li>
-      </ul>
-      <p><strong>Usage:</strong> Mix 2–3 spoons with hot rice and ghee. Great for lunchboxes, fasting meals, or as a sprinkle on upma/pongal.</p>
-    </div>
+        <!-- Product: Pesara Podi -->
+        <div class="row align-items-center mb-5">
+            <div class="col-md-7">
+                <div class="product-card h-100">
+                    <h3 class="h4 mb-3">Pesara Podi – "Flavour & Protein in Every Spoon"</h3>
+                    <ul class="list-unstyled">
+                        <li><span class="checkmark">✅</span>Light on the stomach, high on taste</li>
+                        <li><span class="checkmark">✅</span>Protein-packed with moong dal & chana dal</li>
+                        <li><span class="checkmark">✅</span>Great for kids and elders</li>
+                        <li><span class="checkmark">✅</span>Clean, small-batch roasting</li>
+                        <li><span class="checkmark">✅</span>No preservatives or color</li>
+                    </ul>
+                    <p><strong>Usage:</strong> Mix 2–3 spoons with hot rice and ghee. Great for lunchboxes, fasting
+                        meals, or as a sprinkle on upma/pongal.</p>
+                </div>
+            </div>
+            <div class="col-md-5 text-center">
+                <img src="assets/Img-2.jpeg.jpeg" class="img-fluid rounded shadow" alt="Pesara Podi"
+                    style="max-height:260px;object-fit:cover;">
+            </div>
+        </div>
+        </div>
 
-    <!-- Signature Five Collection -->
-    <div class="mt-5">
-      <h2 class="section-title">✨ Madhuri Spices Signature Five – The Essence of Andhra in Every Spoon</h2>
-      <p>
-        Handcrafted in small batches, the Madhuri Spices Signature Five is a complete collection of Andhra's most loved and time-tested spice blends — Kandi Podi, Dhanya Podi, Pesara Podi, Masala Karam, and Turmeric Powder.
-      </p>
-      <p>
-        Each blend is made with care, using age-old techniques passed down through generations. We roast every ingredient to perfection, grind them in-house, and pack them without preservatives, additives, or artificial colors — just the way it's been done in traditional kitchens across Andhra Pradesh.
-      </p>
-      <p>
-        Whether you're mixing them with hot rice and ghee or adding a dash to your daily dishes, the Madhuri Spices Signature Five promises comfort, authenticity, and the taste of home in every spoon.
-      </p>
+
+
+        <!-- Signature Five Collection -->
+        <div class="mt-5">
+            <h2 class="section-title">✨ Madhuri Spices Signature Five – The Essence of Andhra in Every Spoon</h2>
+            <p>
+                Handcrafted in small batches, the Madhuri Spices Signature Five is a complete collection of Andhra's
+                most loved and time-tested spice blends — Kandi Podi, Dhanya Podi, Pesara Podi, Masala Karam, and
+                Turmeric Powder.
+            </p>
+            <p>
+                Each blend is made with care, using age-old techniques passed down through generations. We roast every
+                ingredient to perfection, grind them in-house, and pack them without preservatives, additives, or
+                artificial colors — just the way it's been done in traditional kitchens across Andhra Pradesh.
+            </p>
+            <p>
+                Whether you're mixing them with hot rice and ghee or adding a dash to your daily dishes, the Madhuri
+                Spices Signature Five promises comfort, authenticity, and the taste of home in every spoon.
+            </p>
+        </div>
     </div>
-  </div>
 </body>
+
 </html>
