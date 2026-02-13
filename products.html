@@ -106,6 +106,17 @@
                     <a href="catalouge.html" class="text-primary font-semibold">Catalogue</a>
                     <a href="index.html#contact"
                         class="text-gray-700 hover:text-primary transition-colors duration-200">Contact</a>
+                    <a href="cart.html"
+                        class="relative text-gray-700 hover:text-primary transition-colors duration-200">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z">
+                            </path>
+                        </svg>
+                        <span id="cart-badge"
+                            class="absolute -top-2 -right-2 bg-primary text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center"
+                            style="display: none;">0</span>
+                    </a>
                 </div>
 
                 <button class="md:hidden" id="mobile-menu-button">
@@ -124,7 +135,8 @@
                 <a href="index.html#about" class="block px-3 py-2 text-gray-700 hover:text-primary">About</a>
                 <a href="index.html#services" class="block px-3 py-2 text-gray-700 hover:text-primary">Services</a>
                 <a href="products.html" class="block px-3 py-2 text-primary font-semibold">Products</a>
-                <a href="catalouge.html" class="text-primary font-semibold">Catalogue</a>
+                <a href="catalouge.html" class="block px-3 py-2 text-primary font-semibold">Catalogue</a>
+                <a href="cart.html" class="block px-3 py-2 text-gray-700 hover:text-primary">Cart</a>
                 <a href="index.html#contact" class="block px-3 py-2 text-gray-700 hover:text-primary">Contact</a>
             </div>
         </div>
@@ -171,11 +183,22 @@
                             <span class="text-gray-400 line-through text-lg">Rs 229/-</span>
                             <span class="text-2xl font-bold text-primary">Rs 199/-</span>
                         </div>
-                        <div class="mt-4">
+                        <div class="mt-4 flex gap-2">
+                            <button type="button" onclick="addToCart('Dhanaya Podi', 199, 'assets/Img-1.jpeg')"
+                                class="flex-1 bg-primary text-white px-4 py-2 rounded-full flex items-center justify-center gap-2 hover:bg-primary/90 transition-colors font-semibold">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z">
+                                    </path>
+                                </svg>
+                                Add to Cart
+                            </button>
                             <button type="button" onclick="showQRModal()"
                                 class="whatsapp-btn bg-green-600 text-white px-4 py-2 rounded-full flex items-center justify-center gap-2 hover:bg-green-700 transition-colors">
-                                <!-- WhatsApp SVG omitted for brevity -->
-                                Order via WhatsApp
+                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                    <path
+                                        d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+                                </svg>
                             </button>
                         </div>
                     </div>
@@ -200,14 +223,22 @@
                             <span class="text-gray-400 line-through text-lg">Rs 229/-</span>
                             <span class="text-2xl font-bold text-primary">Rs 199/-</span>
                         </div>
-                        <div class="mt-4">
+                        <div class="mt-4 flex gap-2">
+                            <button type="button" onclick="addToCart('Pesara Podi', 199, 'assets/Img-2.jpeg.jpeg')"
+                                class="flex-1 bg-primary text-white px-4 py-2 rounded-full flex items-center justify-center gap-2 hover:bg-primary/90 transition-colors font-semibold">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z">
+                                    </path>
+                                </svg>
+                                Add to Cart
+                            </button>
                             <button type="button" onclick="showQRModal()"
                                 class="whatsapp-btn bg-green-600 text-white px-4 py-2 rounded-full flex items-center justify-center gap-2 hover:bg-green-700 transition-colors">
                                 <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
                                     <path
                                         d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
                                 </svg>
-                                Order via WhatsApp
                             </button>
                         </div>
                     </div>
@@ -231,11 +262,22 @@
                             <span class="text-gray-400 line-through text-lg">Rs 229/-</span>
                             <span class="text-2xl font-bold text-primary">Rs 199/-</span>
                         </div>
-                        <div class="mt-4">
+                        <div class="mt-4 flex gap-2">
+                            <button type="button" onclick="addToCart('Turmeric Powder', 199, 'assets/Img-3.jpeg.jpeg')"
+                                class="flex-1 bg-primary text-white px-4 py-2 rounded-full flex items-center justify-center gap-2 hover:bg-primary/90 transition-colors font-semibold">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z">
+                                    </path>
+                                </svg>
+                                Add to Cart
+                            </button>
                             <button type="button" onclick="showQRModal()"
                                 class="whatsapp-btn bg-green-600 text-white px-4 py-2 rounded-full flex items-center justify-center gap-2 hover:bg-green-700 transition-colors">
-                                <!-- WhatsApp SVG omitted for brevity -->
-                                Order via WhatsApp
+                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                    <path
+                                        d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+                                </svg>
                             </button>
                         </div>
                     </div>
@@ -258,11 +300,22 @@
                             <span class="text-gray-400 line-through text-lg">Rs 229/-</span>
                             <span class="text-2xl font-bold text-primary">Rs 199/-</span>
                         </div>
-                        <div class="mt-4">
+                        <div class="mt-4 flex gap-2">
+                            <button type="button" onclick="addToCart('Kandi Podi', 199, 'assets/Img-4.jpeg.jpeg')"
+                                class="flex-1 bg-primary text-white px-4 py-2 rounded-full flex items-center justify-center gap-2 hover:bg-primary/90 transition-colors font-semibold">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z">
+                                    </path>
+                                </svg>
+                                Add to Cart
+                            </button>
                             <button type="button" onclick="showQRModal()"
                                 class="whatsapp-btn bg-green-600 text-white px-4 py-2 rounded-full flex items-center justify-center gap-2 hover:bg-green-700 transition-colors">
-                                <!-- WhatsApp SVG omitted for brevity -->
-                                Order via WhatsApp
+                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                    <path
+                                        d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+                                </svg>
                             </button>
                         </div>
                     </div>
@@ -287,11 +340,22 @@
                             <span class="text-gray-400 line-through text-lg">Rs 229/-</span>
                             <span class="text-2xl font-bold text-primary">Rs 199/-</span>
                         </div>
-                        <div class="mt-4">
+                        <div class="mt-4 flex gap-2">
+                            <button type="button" onclick="addToCart('Masala Karam', 199, 'assets/Img-5.jpeg.jpeg')"
+                                class="flex-1 bg-primary text-white px-4 py-2 rounded-full flex items-center justify-center gap-2 hover:bg-primary/90 transition-colors font-semibold">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z">
+                                    </path>
+                                </svg>
+                                Add to Cart
+                            </button>
                             <button type="button" onclick="showQRModal()"
                                 class="whatsapp-btn bg-green-600 text-white px-4 py-2 rounded-full flex items-center justify-center gap-2 hover:bg-green-700 transition-colors">
-                                <!-- WhatsApp SVG omitted for brevity -->
-                                Order via WhatsApp
+                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                    <path
+                                        d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+                                </svg>
                             </button>
                         </div>
                     </div>
@@ -301,7 +365,8 @@
                 <div
                     class="product-card bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100 flex flex-col">
                     <div class="relative overflow-hidden">
-                        <img src="assets/Gm21.png" alt="21 Garam Masala" class="product-image w-full h-64 object-cover">
+                        <img src="assets/new_items/21Garammasala.png" alt="21 Garam Masala"
+                            class="product-image w-full h-64 object-cover">
                         <div class="absolute top-4 right-4">
                             <span
                                 class="bg-primary text-white px-3 py-1 rounded-full text-sm font-semibold">Premium</span>
@@ -327,10 +392,23 @@
                             <div class="flex items-center justify-between">
                                 <span class="text-2xl font-bold text-primary">Rs 199/-</span>
                             </div>
-                            <div class="mt-4">
+                            <div class="mt-4 flex gap-2">
+                                <button type="button"
+                                    onclick="addToCart('Madhuri Spices 21 Garam Masala Tradition in Every Pinch', 199, 'assets/new_items/21Garammasala.png')"
+                                    class="flex-1 bg-primary text-white px-4 py-2 rounded-full flex items-center justify-center gap-2 hover:bg-primary/90 transition-colors font-semibold">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z">
+                                        </path>
+                                    </svg>
+                                    Add to Cart
+                                </button>
                                 <button type="button" onclick="showQRModal()"
                                     class="whatsapp-btn bg-green-600 text-white px-4 py-2 rounded-full flex items-center justify-center gap-2 hover:bg-green-700 transition-colors">
-                                    Order via WhatsApp
+                                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                        <path
+                                            d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+                                    </svg>
                                 </button>
                             </div>
                         </div>
@@ -341,7 +419,7 @@
                 <div
                     class="product-card bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100 flex flex-col">
                     <div class="relative overflow-hidden">
-                        <img src="assets/sambar powder.jpeg"
+                        <img src="assets/new_items/sambar.jpg"
                             alt="Madhuri Spices Sambar Powder Authentic Andhra Taste in Every Spoon"
                             class="product-image w-full h-64 object-cover">
                         <div class="absolute top-4 right-4">
@@ -373,16 +451,283 @@
                             <div class="flex items-center justify-between">
                                 <span class="text-2xl font-bold text-primary">Rs 199/-</span>
                             </div>
-                            <div class="mt-4">
+                            <div class="mt-4 flex gap-2">
+                                <button type="button"
+                                    onclick="addToCart('Madhuri Spices Sambar Powder Authentic Andhra Taste in Every Spoon', 199, 'assets/new_items/sambar.jpg')"
+                                    class="flex-1 bg-primary text-white px-4 py-2 rounded-full flex items-center justify-center gap-2 hover:bg-primary/90 transition-colors font-semibold">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z">
+                                        </path>
+                                    </svg>
+                                    Add to Cart
+                                </button>
                                 <button type="button" onclick="showQRModal()"
                                     class="whatsapp-btn bg-green-600 text-white px-4 py-2 rounded-full flex items-center justify-center gap-2 hover:bg-green-700 transition-colors">
-                                    Order via WhatsApp
+                                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                        <path
+                                            d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+                                    </svg>
                                 </button>
                             </div>
                         </div>
                     </div>
                 </div>
 
+
+                <!-- Product Card 8 Moringa-->
+                <div
+                    class="product-card bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100 flex flex-col">
+                    <div class="relative overflow-hidden">
+                        <img src="assets/new_items/Moringa.png" alt="Moringa Powder"
+                            class="product-image w-full h-64 object-cover">
+                        <div class="absolute top-4 right-4">
+                            <span
+                                class="bg-primary text-white px-3 py-1 rounded-full text-sm font-semibold">Premium</span>
+                        </div>
+                    </div>
+                    <div class="p-6 flex flex-col flex-grow">
+                        <h3 class="text-xl font-bold text-dark mb-2">Madhuri Spices Moringa Powder - Nature's Superfood
+                        </h3>
+                        <p class="text-gray-600 mb-4 line-clamp-3" id="desc-moringa">
+                            Experience the power of nature with Madhuri Spices Moringa Powder. Sourced from the finest
+                            moringa leaves, our powder is rich in vitamins, minerals, and antioxidants. It's a perfect
+                            addition to your smoothies, juices, or daily meals for a healthy boost.
+                        </p>
+                        <button class="text-primary font-medium text-sm hover:underline self-start"
+                            onclick="toggleReadMore('desc-moringa', this)">
+                            Read more
+                        </button>
+                        <div class="mt-auto">
+                            <div class="flex items-center justify-between">
+                                <span class="text-2xl font-bold text-primary">Rs 199/-</span>
+                            </div>
+                            <div class="mt-4 flex gap-2">
+                                <button type="button"
+                                    onclick="addToCart('Madhuri Spices Moringa Powder', 199, 'assets/new_items/Moringa.png')"
+                                    class="flex-1 bg-primary text-white px-4 py-2 rounded-full flex items-center justify-center gap-2 hover:bg-primary/90 transition-colors font-semibold">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z">
+                                        </path>
+                                    </svg>
+                                    Add to Cart
+                                </button>
+                                <button type="button" onclick="showQRModal()"
+                                    class="whatsapp-btn bg-green-600 text-white px-4 py-2 rounded-full flex items-center justify-center gap-2 hover:bg-green-700 transition-colors">
+                                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                        <path
+                                            d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product Card 9 Royya Karam-->
+                <div
+                    class="product-card bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100 flex flex-col">
+                    <div class="relative overflow-hidden">
+                        <img src="assets/new_items/Royyakaram.jpg" alt="Royya Karam"
+                            class="product-image w-full h-64 object-cover">
+                        <div class="absolute top-4 right-4">
+                            <span
+                                class="bg-primary text-white px-3 py-1 rounded-full text-sm font-semibold">Premium</span>
+                        </div>
+                    </div>
+                    <div class="p-6 flex flex-col flex-grow">
+                        <h3 class="text-xl font-bold text-dark mb-2">Madhuri Spices Royya Karam - Traditional Prawn
+                            Chilli Mix</h3>
+                        <p class="text-gray-600 mb-4 line-clamp-3" id="desc-royya">
+                            Bring the authentic taste of Andhra's coastal cuisine to your home with Madhuri Spices Royya
+                            Karam. This spicy prawn-flavored chilli mix is a traditional recipe, perfect for adding a
+                            burst of flavor to your rice or as a side with your favorite snacks.
+                        </p>
+                        <button class="text-primary font-medium text-sm hover:underline self-start"
+                            onclick="toggleReadMore('desc-royya', this)">
+                            Read more
+                        </button>
+                        <div class="mt-auto">
+                            <div class="flex items-center justify-between">
+                                <span class="text-2xl font-bold text-primary">Rs 249/-</span>
+                            </div>
+                            <div class="mt-4 flex gap-2">
+                                <button type="button"
+                                    onclick="addToCart('Madhuri Spices Royya Karam', 249, 'assets/new_items/Royyakaram.jpg')"
+                                    class="flex-1 bg-primary text-white px-4 py-2 rounded-full flex items-center justify-center gap-2 hover:bg-primary/90 transition-colors font-semibold">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z">
+                                        </path>
+                                    </svg>
+                                    Add to Cart
+                                </button>
+                                <button type="button" onclick="showQRModal()"
+                                    class="whatsapp-btn bg-green-600 text-white px-4 py-2 rounded-full flex items-center justify-center gap-2 hover:bg-green-700 transition-colors">
+                                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                        <path
+                                            d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product Card 10 Idli Podi-->
+                <div
+                    class="product-card bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100 flex flex-col">
+                    <div class="relative overflow-hidden">
+                        <img src="assets/new_items/idli.jpg" alt="Idli Karam Podi"
+                            class="product-image w-full h-64 object-cover">
+                        <div class="absolute top-4 right-4">
+                            <span
+                                class="bg-primary text-white px-3 py-1 rounded-full text-sm font-semibold">Premium</span>
+                        </div>
+                    </div>
+                    <div class="p-6 flex flex-col flex-grow">
+                        <h3 class="text-xl font-bold text-dark mb-2">Madhuri Spices Idli Karam Podi - Perfect Breakfast
+                            Companion</h3>
+                        <p class="text-gray-600 mb-4 line-clamp-3" id="desc-idli">
+                            Elevate your breakfast with Madhuri Spices Idli Karam Podi. Made with a perfect blend of
+                            lentils and spices, this podi is the ultimate companion for hot idlis and crispy dosas. Just
+                            add a little ghee or oil and enjoy the classic taste of Andhra.
+                        </p>
+                        <button class="text-primary font-medium text-sm hover:underline self-start"
+                            onclick="toggleReadMore('desc-idli', this)">
+                            Read more
+                        </button>
+                        <div class="mt-auto">
+                            <div class="flex items-center justify-between">
+                                <span class="text-2xl font-bold text-primary">Rs 199/-</span>
+                            </div>
+                            <div class="mt-4 flex gap-2">
+                                <button type="button"
+                                    onclick="addToCart('Madhuri Spices Idli Karam Podi', 199, 'assets/new_items/idli.jpg')"
+                                    class="flex-1 bg-primary text-white px-4 py-2 rounded-full flex items-center justify-center gap-2 hover:bg-primary/90 transition-colors font-semibold">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z">
+                                        </path>
+                                    </svg>
+                                    Add to Cart
+                                </button>
+                                <button type="button" onclick="showQRModal()"
+                                    class="whatsapp-btn bg-green-600 text-white px-4 py-2 rounded-full flex items-center justify-center gap-2 hover:bg-green-700 transition-colors">
+                                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                        <path
+                                            d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product Card 11 Karivepaku-->
+                <div
+                    class="product-card bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100 flex flex-col">
+                    <div class="relative overflow-hidden">
+                        <img src="assets/new_items/karivepaku.png" alt="Karivepaku Podi"
+                            class="product-image w-full h-64 object-cover">
+                        <div class="absolute top-4 right-4">
+                            <span
+                                class="bg-primary text-white px-3 py-1 rounded-full text-sm font-semibold">Premium</span>
+                        </div>
+                    </div>
+                    <div class="p-6 flex flex-col flex-grow">
+                        <h3 class="text-xl font-bold text-dark mb-2">Madhuri Spices Karivepaku Podi - Aromatic Curry
+                            Leaf Blast</h3>
+                        <p class="text-gray-600 mb-4 line-clamp-3" id="desc-karivepaku">
+                            Savor the aromatic goodness of curry leaves with Madhuri Spices Karivepaku Podi. Handcrafted
+                            with fresh curry leaves and secret spices, this podi is not only delicious but also great
+                            for hair health and digestion. Pair it with hot rice and ghee for a simple yet
+                            soul-satisfying meal.
+                        </p>
+                        <button class="text-primary font-medium text-sm hover:underline self-start"
+                            onclick="toggleReadMore('desc-karivepaku', this)">
+                            Read more
+                        </button>
+                        <div class="mt-auto">
+                            <div class="flex items-center justify-between">
+                                <span class="text-2xl font-bold text-primary">Rs 199/-</span>
+                            </div>
+                            <div class="mt-4 flex gap-2">
+                                <button type="button"
+                                    onclick="addToCart('Madhuri Spices Karivepaku Podi', 199, 'assets/new_items/karivepaku.png')"
+                                    class="flex-1 bg-primary text-white px-4 py-2 rounded-full flex items-center justify-center gap-2 hover:bg-primary/90 transition-colors font-semibold">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z">
+                                        </path>
+                                    </svg>
+                                    Add to Cart
+                                </button>
+                                <button type="button" onclick="showQRModal()"
+                                    class="whatsapp-btn bg-green-600 text-white px-4 py-2 rounded-full flex items-center justify-center gap-2 hover:bg-green-700 transition-colors">
+                                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                        <path
+                                            d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <!-- Product Card 13 Rasam Powder-->
+                <div
+                    class="product-card bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100 flex flex-col">
+                    <div class="relative overflow-hidden">
+                        <img src="assets/new_items/rasampowder.jpg" alt="Rasam Powder"
+                            class="product-image w-full h-64 object-cover">
+                        <div class="absolute top-4 right-4">
+                            <span
+                                class="bg-primary text-white px-3 py-1 rounded-full text-sm font-semibold">Premium</span>
+                        </div>
+                    </div>
+                    <div class="p-6 flex flex-col flex-grow">
+                        <h3 class="text-xl font-bold text-dark mb-2">Madhuri Spices Rasam Powder - Tangy & Peppery
+                            Delight</h3>
+                        <p class="text-gray-600 mb-4 line-clamp-3" id="desc-rasam">
+                            Warm your soul with the authentic taste of Andhra rasam using Madhuri Spices Rasam Powder.
+                            Our blend of pepper, cumin, and special lentils creates a tangy, peppery, and incredibly
+                            aromatic rasam that’s perfect for a comforting meal. Just add to your tomato or tamarind
+                            water and enjoy.
+                        </p>
+                        <button class="text-primary font-medium text-sm hover:underline self-start"
+                            onclick="toggleReadMore('desc-rasam', this)">
+                            Read more
+                        </button>
+                        <div class="mt-auto">
+                            <div class="flex items-center justify-between">
+                                <span class="text-2xl font-bold text-primary">Rs 199/-</span>
+                            </div>
+                            <div class="mt-4 flex gap-2">
+                                <button type="button"
+                                    onclick="addToCart('Madhuri Spices Rasam Powder', 199, 'assets/new_items/rasampowder.jpg')"
+                                    class="flex-1 bg-primary text-white px-4 py-2 rounded-full flex items-center justify-center gap-2 hover:bg-primary/90 transition-colors font-semibold">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z">
+                                        </path>
+                                    </svg>
+                                    Add to Cart
+                                </button>
+                                <button type="button" onclick="showQRModal()"
+                                    class="whatsapp-btn bg-green-600 text-white px-4 py-2 rounded-full flex items-center justify-center gap-2 hover:bg-green-700 transition-colors">
+                                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                        <path
+                                            d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
             </div>
         </div>
@@ -533,83 +878,7 @@
         </div>
     </div>
 
-    <!-- Offer Popup Modal -->
-    <div id="offerPopup"
-        style="display:none; position:fixed; z-index:10000; left:0; top:0; width:100vw; height:100vh; background:rgba(0,0,0,0.55); align-items:center; justify-content:center;">
-        <div
-            style="background:#fff; border-radius:14px; padding:1.5rem; max-width:90vw; width:360px; text-align:center; position:relative; box-shadow:0 8px 24px rgba(0,0,0,0.2); overflow-y:auto; max-height:85vh;">
 
-            <!-- Close Button -->
-            <button onclick="closeOfferPopup()" aria-label="Close offer popup"
-                style="position:absolute; top:10px; right:14px; background:none; border:none; font-size:1.5rem; color:#666; cursor:pointer;">
-                &times;
-            </button>
-
-            <div class="mb-2">
-                <span class="inline-block bg-primary text-white px-3 py-1 rounded-full text-sm font-semibold mb-2">
-                    Special Offer!
-                </span>
-                <h2 class="text-xl font-bold text-dark mb-1">Current Deals</h2>
-                <p class="text-gray-600 text-sm mb-2">Offer valid till Aug 31<sup>st</sup></p>
-            </div>
-
-            <!-- Popup Content -->
-            <div class="space-y-6 text-sm">
-                <!-- Combo Offer 1 -->
-                <div class="flex flex-col items-center bg-light rounded-xl p-4 shadow-sm">
-                    <div class="flex gap-2 mb-2">
-                        <img src="assets/Img-1.jpeg" alt="Kandi Podi" class="w-16 h-16 object-cover rounded-lg border">
-                        <img src="assets/Img-5.jpeg.jpeg" alt="Masala Karam"
-                            class="w-16 h-16 object-cover rounded-lg border">
-                    </div>
-                    <div class="font-semibold text-dark mb-1">🔥 Combo Offer: Kandi Podi + Masala Karam</div>
-                    <div class="text-primary font-bold text-lg mb-1">₹260 Only</div>
-                    <button onclick="claimOffer()"
-                        class="bg-green-600 text-white px-4 py-2 rounded-full font-semibold flex items-center gap-2 hover:bg-green-700 transition-colors">
-                        Order via WhatsApp
-                    </button>
-                </div>
-
-                <!-- Buy 3 Powders Offer -->
-                <div class="flex flex-col items-center bg-light rounded-xl p-4 shadow-sm">
-                    <div class="flex gap-2 mb-2">
-                        <img src="assets/Img-2.jpeg.jpeg" alt="Powder 1" class="w-16 h-16 object-cover rounded-lg border">
-                        <img src="assets/Img-3.jpeg.jpeg" alt="Powder 2" class="w-16 h-16 object-cover rounded-lg border">
-                        <img src="assets/Img-4.jpeg.jpeg" alt="Powder 3" class="w-16 h-16 object-cover rounded-lg border">
-                    </div>
-                    <div class="font-semibold text-dark mb-1">🎁 Buy Any 3 Powders, Get ₹30 Off!</div>
-                    <div class="text-primary font-bold text-lg mb-1">On all powder products</div>
-                    <button onclick="claimOffer()"
-                        class="bg-green-600 text-white px-4 py-2 rounded-full font-semibold flex items-center gap-2 hover:bg-green-700 transition-colors">
-                        Order via WhatsApp
-                    </button>
-                </div>
-
-                <!-- Combo Deals Section -->
-                <div class="flex flex-col items-center bg-light rounded-xl p-4 shadow-sm">
-                    <div class="font-semibold text-dark mb-2">🎉 Combo Deals</div>
-                    <div class="w-full space-y-2">
-                        <div class="flex items-center justify-between bg-white rounded-lg px-3 py-2 border">
-                            <span>Combo 1: Dhanya + Kandi Podi</span>
-                            <span class="text-primary font-bold">₹270</span>
-                        </div>
-                        <div class="flex items-center justify-between bg-white rounded-lg px-3 py-2 border">
-                            <span>Combo 2: Masala Karam + Turmeric (160g each)</span>
-                            <span class="text-primary font-bold">₹260</span>
-                        </div>
-                        <div class="flex items-center justify-between bg-white rounded-lg px-3 py-2 border">
-                            <span>Signature 5-Pack Combo</span>
-                            <span class="text-primary font-bold">₹699</span>
-                        </div>
-                    </div>
-                    <button onclick="claimOffer()"
-                        class="mt-3 bg-green-600 text-white px-4 py-2 rounded-full font-semibold flex items-center gap-2 hover:bg-green-700 transition-colors">
-                        Order via WhatsApp
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <script>
         // Mobile menu toggle
@@ -641,19 +910,7 @@
             if (e.target === this) closeQRModal();
         });
 
-        // Show offer popup on page load
-        window.addEventListener('DOMContentLoaded', function () {
-            setTimeout(function () {
-                document.getElementById('offerPopup').style.display = 'flex';
-            }, 400); // slight delay for effect
-        });
-        function closeOfferPopup() {
-            document.getElementById('offerPopup').style.display = 'none';
-        }
-        function claimOffer() {
-            closeOfferPopup();
-            showQRModal(); // This will open the WhatsApp QR modal
-        }
+
 
         function toggleReadMore(descId, btn) {
             const desc = document.getElementById(descId);
@@ -665,6 +922,58 @@
                 btn.innerText = "Read less";
             }
         }
+
+        // Cart Management Functions
+        function getCart() {
+            const cart = localStorage.getItem('cart');
+            return cart ? JSON.parse(cart) : [];
+        }
+
+        function saveCart(cart) {
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartBadge();
+        }
+
+        function addToCart(name, price, image) {
+            const cart = getCart();
+            const existingItem = cart.find(item => item.name === name);
+
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({
+                    name: name,
+                    price: price,
+                    image: image,
+                    quantity: 1
+                });
+            }
+
+            saveCart(cart);
+            // Navigate to cart page
+            window.location.href = 'cart.html';
+        }
+
+        function updateCartBadge() {
+            const cart = getCart();
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            const badge = document.getElementById('cart-badge');
+
+            if (badge) {
+                if (totalItems > 0) {
+                    badge.textContent = totalItems;
+                    badge.style.display = 'flex';
+                } else {
+                    badge.style.display = 'none';
+                }
+            }
+        }
+
+        // Initialize on page load
+        window.addEventListener('DOMContentLoaded', function () {
+            // Update cart badge
+            updateCartBadge();
+        });
 
     </script>
 </body>
