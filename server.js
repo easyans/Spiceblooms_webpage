@@ -103,11 +103,12 @@ function validateAddress(input, countryHint) {
   const errors = {};
   if (address.name.length < 2) errors.name = "Enter the full name.";
   const phoneDigits = digits(address.phone);
+  const indiaLocal = phoneDigits.replace(/^91/, "");
   if (country.toLowerCase() === "india") {
-    if (!/^[6-9]\d{9}$/.test(phoneDigits) && !/^91[6-9]\d{9}$/.test(phoneDigits)) {
+    if (!/^[6-9]\d{9}$/.test(indiaLocal) && !/^[6-9]\d{9}$/.test(phoneDigits)) {
       errors.phone = "Enter a valid 10-digit Indian mobile number.";
     }
-  } else if (phoneDigits.length < 6 || phoneDigits.length > 15) {
+  } else if (phoneDigits.length < 8 || phoneDigits.length > 16) {
     errors.phone = "Enter a valid mobile number.";
   }
   if (address.line1.length < 4) errors.line1 = "Enter address line 1.";

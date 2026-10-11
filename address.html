@@ -470,6 +470,30 @@
             border-color: #d97706;
         }
 
+        .addr-phone-row {
+            display: flex;
+            gap: 0.55rem;
+            align-items: stretch;
+        }
+
+        .addr-phone-row select {
+            width: auto;
+            min-width: 8.75rem;
+            max-width: 46%;
+            flex: 0 0 auto;
+        }
+
+        .addr-phone-row input {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .addr-phone-row input:disabled {
+            background: #f6f3ee;
+            color: #9ca3af;
+            cursor: not-allowed;
+        }
+
         .field-error {
             min-height: 1rem;
             margin: 0.3rem 0 0;
@@ -667,8 +691,33 @@
                     <p class="field-error" data-error="name"></p>
                 </div>
                 <div>
-                    <label for="address-phone">Mobile Number</label>
-                    <input id="address-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" required>
+                    <label for="address-phone-code">Mobile Number</label>
+                    <div class="addr-phone-row">
+                        <select id="address-phone-code" name="phoneCode" autocomplete="tel-country-code" aria-label="Country code" required>
+                            <option value="" disabled selected>Country code</option>
+                            <option value="+91">+91 India</option>
+                            <option value="+61">+61 Australia</option>
+                            <option value="+1">+1 United States</option>
+                            <option value="+1-CA">+1 Canada</option>
+                            <option value="+44">+44 United Kingdom</option>
+                            <option value="+971">+971 UAE</option>
+                            <option value="+65">+65 Singapore</option>
+                            <option value="+60">+60 Malaysia</option>
+                            <option value="+966">+966 Saudi Arabia</option>
+                            <option value="+974">+974 Qatar</option>
+                            <option value="+968">+968 Oman</option>
+                            <option value="+973">+973 Bahrain</option>
+                            <option value="+965">+965 Kuwait</option>
+                            <option value="+94">+94 Sri Lanka</option>
+                            <option value="+977">+977 Nepal</option>
+                            <option value="+880">+880 Bangladesh</option>
+                            <option value="+92">+92 Pakistan</option>
+                            <option value="+63">+63 Philippines</option>
+                            <option value="+49">+49 Germany</option>
+                            <option value="+33">+33 France</option>
+                        </select>
+                        <input id="address-phone" name="phone" type="tel" inputmode="numeric" autocomplete="tel-national" maxlength="15" placeholder="Select a country code first" disabled required>
+                    </div>
                     <p class="field-error" data-error="phone"></p>
                 </div>
                 <div>
@@ -884,6 +933,70 @@
             localStorage.setItem(LOCAL_ADDRESS_KEY, JSON.stringify(store));
         }
 
+        const PHONE_CODES = [
+            { value: '+91', dial: '+91', country: 'India', local: 10, pattern: /^[6-9]\d{9}$/, message: 'Enter a valid 10-digit Indian mobile number.' },
+            { value: '+61', dial: '+61', country: 'Australia', local: 9, pattern: /^\d{9}$/, message: 'Enter a valid 9-digit Australian mobile number.' },
+            { value: '+1', dial: '+1', country: 'United States', local: 10, pattern: /^\d{10}$/, message: 'Enter a valid 10-digit mobile number.' },
+            { value: '+1-CA', dial: '+1', country: 'Other', local: 10, pattern: /^\d{10}$/, message: 'Enter a valid 10-digit mobile number.' },
+            { value: '+44', dial: '+44', country: 'United Kingdom', local: 10, pattern: /^\d{10}$/, message: 'Enter a valid 10-digit UK mobile number.' },
+            { value: '+971', dial: '+971', country: 'Other', local: 9, pattern: /^\d{8,9}$/, message: 'Enter a valid UAE mobile number.' },
+            { value: '+65', dial: '+65', country: 'Other', local: 8, pattern: /^\d{8}$/, message: 'Enter a valid Singapore mobile number.' },
+            { value: '+60', dial: '+60', country: 'Other', local: 10, pattern: /^\d{8,10}$/, message: 'Enter a valid Malaysian mobile number.' },
+            { value: '+966', dial: '+966', country: 'Other', local: 9, pattern: /^\d{8,9}$/, message: 'Enter a valid Saudi mobile number.' },
+            { value: '+974', dial: '+974', country: 'Other', local: 8, pattern: /^\d{8}$/, message: 'Enter a valid Qatar mobile number.' },
+            { value: '+968', dial: '+968', country: 'Other', local: 8, pattern: /^\d{8}$/, message: 'Enter a valid Oman mobile number.' },
+            { value: '+973', dial: '+973', country: 'Other', local: 8, pattern: /^\d{8}$/, message: 'Enter a valid Bahrain mobile number.' },
+            { value: '+965', dial: '+965', country: 'Other', local: 8, pattern: /^\d{8}$/, message: 'Enter a valid Kuwait mobile number.' },
+            { value: '+94', dial: '+94', country: 'Other', local: 9, pattern: /^\d{9}$/, message: 'Enter a valid Sri Lankan mobile number.' },
+            { value: '+977', dial: '+977', country: 'Other', local: 10, pattern: /^\d{10}$/, message: 'Enter a valid Nepal mobile number.' },
+            { value: '+880', dial: '+880', country: 'Other', local: 10, pattern: /^\d{10}$/, message: 'Enter a valid Bangladesh mobile number.' },
+            { value: '+92', dial: '+92', country: 'Other', local: 10, pattern: /^\d{10}$/, message: 'Enter a valid Pakistan mobile number.' },
+            { value: '+63', dial: '+63', country: 'Other', local: 10, pattern: /^\d{10}$/, message: 'Enter a valid Philippines mobile number.' },
+            { value: '+49', dial: '+49', country: 'Other', local: 11, pattern: /^\d{10,11}$/, message: 'Enter a valid German mobile number.' },
+            { value: '+33', dial: '+33', country: 'Other', local: 9, pattern: /^\d{9}$/, message: 'Enter a valid French mobile number.' }
+        ];
+        const COUNTRY_TO_CODE = {
+            India: '+91',
+            Australia: '+61',
+            'United States': '+1',
+            'United Kingdom': '+44'
+        };
+
+        function phoneRule(value) {
+            return PHONE_CODES.find(function (item) { return item.value === value; }) || null;
+        }
+
+        function formatPhone(code, local) {
+            const rule = phoneRule(code);
+            const dial = rule ? rule.dial : code;
+            const number = String(local || '').replace(/\D/g, '');
+            if (!dial || !number) return number;
+            return dial + ' ' + number;
+        }
+
+        function splitPhone(raw) {
+            const digits = String(raw || '').replace(/\D/g, '');
+            const ranked = PHONE_CODES.slice().sort(function (a, b) { return b.dial.length - a.dial.length; });
+            for (let i = 0; i < ranked.length; i += 1) {
+                const prefix = ranked[i].dial.replace(/\D/g, '');
+                if (digits.indexOf(prefix) === 0 && digits.length > prefix.length) {
+                    return { code: ranked[i].value, local: digits.slice(prefix.length) };
+                }
+            }
+            if (/^[6-9]\d{9}$/.test(digits)) return { code: '+91', local: digits };
+            return { code: '', local: digits };
+        }
+
+        function setPhoneEnabled(code) {
+            const input = document.getElementById('address-phone');
+            const rule = phoneRule(code);
+            const enabled = Boolean(code);
+            input.disabled = !enabled;
+            input.placeholder = enabled ? 'Mobile number' : 'Select a country code first';
+            input.maxLength = rule ? rule.local : 15;
+            if (!enabled) input.value = '';
+        }
+
         function fingerprint(address) {
             return [
                 String(address.name || '').trim().toLowerCase(),
@@ -913,7 +1026,15 @@
             const errors = {};
             const phoneDigits = address.phone.replace(/\D/g, '');
             if (address.name.length < 2) errors.name = 'Enter the full name.';
-            if (country.toLowerCase() === 'india') {
+            const selectedCode = input.phoneCode || splitPhone(address.phone).code;
+            const rule = phoneRule(selectedCode);
+            if (!selectedCode) {
+                errors.phone = 'Select a country code first.';
+            } else if (rule) {
+                const prefix = rule.dial.replace(/\D/g, '');
+                const local = phoneDigits.indexOf(prefix) === 0 ? phoneDigits.slice(prefix.length) : phoneDigits;
+                if (!rule.pattern.test(local)) errors.phone = rule.message;
+            } else if (country.toLowerCase() === 'india') {
                 if (!/^[6-9]\d{9}$/.test(phoneDigits) && !/^91[6-9]\d{9}$/.test(phoneDigits)) {
                     errors.phone = 'Enter a valid 10-digit Indian mobile number.';
                 }
@@ -1018,6 +1139,25 @@
                 .filter(Boolean).join(', ');
         }
 
+        function paymentEmail() {
+            const session = window.SpicebloomsAuth && window.SpicebloomsAuth.get();
+            const email = session && session.email ? String(session.email).trim() : '';
+            return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) ? email : '';
+        }
+
+        function paymentPhone(address) {
+            const digits = String(address && address.phone || '').replace(/\D/g, '');
+            if (/^91[6-9]\d{9}$/.test(digits)) return digits.slice(2);
+            if (/^[6-9]\d{9}$/.test(digits)) return digits;
+            return digits.length >= 8 ? digits : '';
+        }
+
+        function paymentDeliveryAddress(address) {
+            const line = formatAddress(address);
+            const name = String(address && address.name || '').trim();
+            return name && line ? name + ', ' + line : (line || name);
+        }
+
         function selectedAddress() {
             return addresses.find(function (item) { return item.id === selectedAddressId; }) || null;
         }
@@ -1086,9 +1226,12 @@
 
         function formValues() {
             const type = document.querySelector('input[name="type"]:checked');
+            const phoneCode = document.getElementById('address-phone-code').value;
+            const localPhone = document.getElementById('address-phone').value;
             return {
                 name: document.getElementById('address-name').value,
-                phone: document.getElementById('address-phone').value,
+                phone: formatPhone(phoneCode, localPhone),
+                phoneCode: phoneCode,
                 line1: document.getElementById('address-line1').value,
                 line2: document.getElementById('address-line2').value,
                 building: document.getElementById('address-building').value,
@@ -1121,7 +1264,10 @@
             const session = window.SpicebloomsAuth && window.SpicebloomsAuth.get();
             document.getElementById('address-id').value = item && item.id ? item.id : '';
             document.getElementById('address-name').value = item ? item.name : (session && session.name ? session.name : '');
-            document.getElementById('address-phone').value = item ? item.phone : (session && session.phone ? session.phone : '');
+            const parsedPhone = item ? splitPhone(item.phone) : { code: '', local: '' };
+            document.getElementById('address-phone-code').value = parsedPhone.code;
+            setPhoneEnabled(parsedPhone.code);
+            document.getElementById('address-phone').value = parsedPhone.local;
             document.getElementById('address-line1').value = item ? item.line1 : '';
             document.getElementById('address-line2').value = item ? item.line2 : '';
             document.getElementById('address-building').value = item ? item.building : '';
@@ -1233,12 +1379,38 @@
             sessionStorage.setItem('checkout_shipping_address', JSON.stringify(address));
             const paymentUrl = new URL(RAZORPAY_PAYMENT_PAGE);
             paymentUrl.searchParams.set('amount', String(units));
+            const email = paymentEmail();
+            const phone = paymentPhone(address);
+            const delivery = paymentDeliveryAddress(address);
+            if (email) paymentUrl.searchParams.set('email', email);
+            if (phone) paymentUrl.searchParams.set('phone', phone);
+            if (delivery) paymentUrl.searchParams.set('delivery_address', delivery);
             window.location.href = paymentUrl.toString();
         }
 
         document.getElementById('add-address-top').addEventListener('click', function () { openForm(null); });
         document.getElementById('add-address-card').addEventListener('click', function () { openForm(null); });
         document.getElementById('address-form').addEventListener('submit', saveAddress);
+        document.getElementById('address-phone-code').addEventListener('change', function () {
+            const code = this.value;
+            const rule = phoneRule(code);
+            setPhoneEnabled(code);
+            if (rule && COUNTRY_TO_CODE[rule.country] === rule.value) {
+                document.getElementById('address-country').value = rule.country;
+            } else if (rule && rule.country === 'Other') {
+                document.getElementById('address-country').value = 'Other';
+            }
+            document.getElementById('address-phone').focus();
+        });
+        document.getElementById('address-country').addEventListener('change', function () {
+            const mapped = COUNTRY_TO_CODE[this.value];
+            if (!mapped) return;
+            document.getElementById('address-phone-code').value = mapped;
+            setPhoneEnabled(mapped);
+        });
+        document.getElementById('address-phone').addEventListener('input', function () {
+            this.value = this.value.replace(/\D/g, '');
+        });
         document.getElementById('continue-order').addEventListener('click', continueToPayment);
         document.querySelectorAll('[data-address-close]').forEach(function (el) {
             el.addEventListener('click', function () { closeForm(false); });
