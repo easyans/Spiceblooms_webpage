@@ -1,4 +1,10 @@
 {
+  "rewrites": [
+    {
+      "source": "/spiceblooms-logo.svg",
+      "destination": "/assets/spiceblooms-logo.svg"
+    }
+  ],
   "headers": [
     {
       "source": "/(.*)",
