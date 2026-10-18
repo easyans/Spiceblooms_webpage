@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Catalogue - SpiceBlooms Naturals | The Spiceblooms Naturals Signature Collection</title>
     <meta name="description"
-        content="Explore the SpiceBlooms catalogue — the Spiceblooms Naturals Signature Five: Kandi Podi, Dhanya Podi, Pesara Podi, Masala Karam, and Turmeric Powder. Handcrafted in small batches, preservative-free.">
+        content="Explore the SpiceBlooms Naturals catalogue and browse our categories and products.">
 
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -322,18 +322,21 @@
     <section id="products" class="pt-20 pb-8 bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <span class="section-eyebrow">The Catalogue</span>
-            <h2 class="text-3xl lg:text-4xl font-bold mb-4">Our Signature Spice Lineup</h2>
+            <h2 class="text-3xl lg:text-4xl font-bold mb-4">Browse Our Catalogue</h2>
             <div class="underline-divider mx-auto mb-6"></div>
             <p class="text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed">
-                Five handcrafted blends, each rooted in a specific Andhra tradition — chosen for their balance,
-                purity, and unmistakable home-style flavour.
+                Browse our product categories and discover handcrafted SpiceBlooms Naturals products.
             </p>
         </div>
     </section>
 
     <!-- Products Detail -->
     <section class="pb-20 bg-white">
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
+        <div id="catalog-content" class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <p id="catalog-status" class="py-10 text-center text-gray-600" role="status" aria-live="polite">
+                Loading catalogue...
+            </p>
+            <div id="catalog-categories" class="space-y-10"></div>
 
             <!-- Masala Karam -->
             <article
@@ -788,6 +791,232 @@
                     mobileMenu.classList.toggle('hidden');
                 });
             }
+        })();
+    </script>
+    <script src="api.js"></script>
+    <script>
+        (function () {
+            const content = document.getElementById('catalog-content');
+            const status = document.getElementById('catalog-status');
+            const categoriesContainer = document.getElementById('catalog-categories');
+            if (!content || !status || !categoriesContainer) return;
+
+            content.replaceChildren(status, categoriesContainer);
+
+            const escapeHtml = (value) => String(value).replace(/[&<>"']/g, (character) => ({
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#39;'
+            })[character]);
+
+            const safeImageUrl = (value) => {
+                if (typeof value !== 'string' || !value.trim()) return '';
+                try {
+                    const url = new URL(value, 'https://localhost:7100');
+                    return ['http:', 'https:'].includes(url.protocol) ? url.href : '';
+                } catch (error) {
+                    return '';
+                }
+            };
+
+            const renderItem = (item) => {
+                const name = item.itemName || 'Untitled item';
+                const imageUrl = safeImageUrl(item.imageUri);
+                const image = imageUrl
+                    ? `<img src="${escapeHtml(imageUrl)}" alt="${escapeHtml(name)}" class="h-56 w-full object-cover" loading="lazy">`
+                    : '<div class="flex h-56 items-center justify-center bg-orange-50 text-primary"><span class="text-sm font-semibold">Image unavailable</span></div>';
+                const oldPrice = item.oldPrice
+                    ? `<span class="mr-2 text-sm text-gray-400 line-through">${escapeHtml(item.oldPrice)}</span>`
+                    : '';
+                const actualPrice = item.actualPrice
+                    ? `<span class="font-semibold text-primary">${escapeHtml(item.actualPrice)}</span>`
+                    : '';
+
+                return `
+                    <article class="overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm transition-shadow hover:shadow-lg">
+                        ${image}
+                        <div class="p-6">
+                            ${item.brandName ? `<p class="mb-1 text-xs font-semibold uppercase tracking-wide text-gray-500">${escapeHtml(item.brandName)}</p>` : ''}
+                            <h4 class="text-xl font-bold text-dark">${escapeHtml(name)}</h4>
+                            ${item.quantity ? `<p class="mt-1 text-sm text-gray-500">${escapeHtml(item.quantity)}</p>` : ''}
+                            ${item.description ? `<p class="mt-3 text-sm leading-relaxed text-gray-600">${escapeHtml(item.description)}</p>` : ''}
+                            ${oldPrice || actualPrice ? `<p class="mt-4">${oldPrice}${actualPrice}</p>` : ''}
+                            ${item.canSubscribe && item.subscribeAt ? `<p class="mt-2 text-sm text-brand">Subscribe from ${escapeHtml(item.subscribeAt)}</p>` : ''}
+                        </div>
+                    </article>`;
+            };
+
+            const renderItemViewer = (viewer, filters) => {
+                if (!viewer || !Array.isArray(viewer.itemList)) {
+                    throw new Error('The items API returned an unexpected response.');
+                }
+
+                const list = document.createElement('div');
+                list.className = 'grid gap-6 sm:grid-cols-2 lg:grid-cols-3';
+                list.innerHTML = viewer.itemList.map(renderItem).join('');
+
+                const section = document.createElement('div');
+                section.appendChild(list);
+
+                const total = Number(viewer.totalListCount);
+                if (Number.isFinite(total) && total > viewer.itemList.length) {
+                    const loadMore = document.createElement('button');
+                    loadMore.type = 'button';
+                    loadMore.className = 'mt-6 rounded-full border border-primary px-5 py-2 font-semibold text-primary hover:bg-primary hover:text-white';
+                    loadMore.textContent = 'Load more';
+                    let page = 1;
+                    loadMore.addEventListener('click', async () => {
+                        loadMore.disabled = true;
+                        loadMore.textContent = 'Loading...';
+                        try {
+                            const nextPage = page + 1;
+                            const next = await window.SpicebloomsApi.getCatalogItems({
+                                ...filters,
+                                page: nextPage,
+                                pageSize: 20
+                            });
+                            if (!next || !Array.isArray(next.itemList)) {
+                                throw new Error('The items API returned an unexpected response.');
+                            }
+                            page = nextPage;
+                            list.insertAdjacentHTML('beforeend', next.itemList.map(renderItem).join(''));
+                            const loaded = list.children.length;
+                            if (loaded >= Number(next.totalListCount)) {
+                                loadMore.remove();
+                            } else {
+                                loadMore.disabled = false;
+                                loadMore.textContent = 'Load more';
+                            }
+                        } catch (error) {
+                            loadMore.disabled = false;
+                            loadMore.textContent = 'Try loading more';
+                            console.error('Unable to load more catalog items.', error);
+                        }
+                    });
+                    section.appendChild(loadMore);
+                }
+                return section;
+            };
+
+            const showError = (error) => {
+                status.replaceChildren();
+                status.className = 'py-10 text-center text-red-700';
+                const message = document.createElement('p');
+                message.textContent = error.message || 'Unable to load the catalogue. Please try again.';
+                const retryButton = document.createElement('button');
+                retryButton.type = 'button';
+                retryButton.className = 'mt-4 rounded-full bg-primary px-5 py-2 font-semibold text-white hover:bg-primary/90';
+                retryButton.textContent = 'Try again';
+                retryButton.addEventListener('click', loadCategories);
+                status.append(message, retryButton);
+                status.hidden = false;
+            };
+
+            const fetchViewer = async (filters) => {
+                const viewer = await window.SpicebloomsApi.getCatalogItems({
+                    ...filters,
+                    page: 1,
+                    pageSize: 20
+                });
+                if (!viewer || !Array.isArray(viewer.itemList)) {
+                    throw new Error('The items API returned an unexpected response.');
+                }
+                return viewer;
+            };
+
+            const buildCategorySection = async (category) => {
+                if (!category || !category.id) {
+                    throw new Error('The categories API returned a category without an ID.');
+                }
+
+                const section = document.createElement('section');
+                section.className = 'space-y-6';
+                const heading = document.createElement('div');
+                heading.className = 'flex items-center gap-4';
+                const categoryImage = safeImageUrl(category.imageUri);
+                if (categoryImage) {
+                    const image = document.createElement('img');
+                    image.src = categoryImage;
+                    image.alt = '';
+                    image.loading = 'lazy';
+                    image.className = 'h-16 w-16 rounded-xl object-cover';
+                    heading.appendChild(image);
+                }
+                const title = document.createElement('h3');
+                title.className = 'text-2xl font-bold text-brand';
+                title.textContent = category.itemName || 'Other products';
+                heading.appendChild(title);
+                section.appendChild(heading);
+
+                const subCategories = await window.SpicebloomsApi.getCatalogSubCategories(category.id);
+                if (!Array.isArray(subCategories)) {
+                    throw new Error('The subcategories API returned an unexpected response.');
+                }
+
+                if (subCategories.length === 0) {
+                    const viewer = await fetchViewer({ categoryId: category.id });
+                    if (viewer.itemList.length) {
+                        section.appendChild(renderItemViewer(viewer, { categoryId: category.id }));
+                    }
+                    return section;
+                }
+
+                const subCategorySections = await Promise.all(subCategories.map(async (subCategory) => {
+                    if (!subCategory || !subCategory.id) {
+                        throw new Error('The subcategories API returned a subcategory without an ID.');
+                    }
+                    const subCategorySection = document.createElement('div');
+                    subCategorySection.className = 'space-y-4';
+                    const subCategoryTitle = document.createElement('h4');
+                    subCategoryTitle.className = 'text-xl font-semibold text-dark';
+                    subCategoryTitle.textContent = subCategory.name || 'Products';
+                    subCategorySection.appendChild(subCategoryTitle);
+                    const viewer = await fetchViewer({
+                        categoryId: category.id,
+                        subCategoryId: subCategory.id
+                    });
+                    if (viewer.itemList.length) {
+                        subCategorySection.appendChild(renderItemViewer(viewer, {
+                            categoryId: category.id,
+                            subCategoryId: subCategory.id
+                        }));
+                    } else {
+                        const empty = document.createElement('p');
+                        empty.className = 'text-sm text-gray-500';
+                        empty.textContent = 'No items in this category yet.';
+                        subCategorySection.appendChild(empty);
+                    }
+                    return subCategorySection;
+                }));
+                subCategorySections.forEach((subCategorySection) => section.appendChild(subCategorySection));
+                return section;
+            };
+
+            async function loadCategories() {
+                status.textContent = 'Loading catalogue...';
+                status.className = 'py-10 text-center text-gray-600';
+                status.hidden = false;
+                categoriesContainer.replaceChildren();
+                content.replaceChildren(status, categoriesContainer);
+                try {
+                    const response = await window.SpicebloomsApi.getCatalogCategories();
+                    const categories = Array.isArray(response) ? response : null;
+                    if (!categories) throw new Error('The categories API returned an unexpected response.');
+                    if (categories.length === 0) {
+                        status.textContent = 'No catalogue categories are available right now.';
+                        return;
+                    }
+                    const sections = await Promise.all(categories.map(buildCategorySection));
+                    sections.forEach((section) => categoriesContainer.appendChild(section));
+                    status.hidden = true;
+                } catch (error) {
+                    showError(error);
+                }
+            }
+
+            loadCategories();
         })();
     </script>
     <script src="auth.js"></script>
