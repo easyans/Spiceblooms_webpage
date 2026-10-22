@@ -814,7 +814,7 @@
             const safeImageUrl = (value) => {
                 if (typeof value !== 'string' || !value.trim()) return '';
                 try {
-                    const url = new URL(value, 'https://localhost:7100');
+                    const url = new URL(value, 'https://spiceblooms-api-dev.azurewebsites.net');
                     return ['http:', 'https:'].includes(url.protocol) ? url.href : '';
                 } catch (error) {
                     return '';

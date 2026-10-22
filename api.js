@@ -4,7 +4,7 @@
  * React/Angular service with minimal changes.
  */
 (function () {
-  const API_BASE_URL = "https://localhost:7100";
+  const API_BASE_URL = "https://spiceblooms-api-dev.azurewebsites.net";
   const PHONE_PREFIX = "91";
 
   class ApiError extends Error {
