@@ -7,6 +7,7 @@
     <title>Cart - SpiceBlooms</title>
     <script src="https://cdn.tailwindcss.com"></script>
 
+    <script src="api.js"></script>
     <script>
         tailwind.config = {
             theme: {
@@ -111,6 +112,47 @@
             border-radius: 30px;
             background: #fff;
             box-shadow: 0 20px 50px rgba(45, 45, 45, 0.18);
+        }
+
+        .checkout-flow-modal[hidden] {
+            display: none !important;
+        }
+
+        .checkout-flow-modal {
+            position: fixed;
+            inset: 0;
+            z-index: 80;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+
+        .checkout-flow-backdrop {
+            position: absolute;
+            inset: 0;
+            background: rgba(28, 24, 20, 0.55);
+            backdrop-filter: blur(5px);
+        }
+
+        .checkout-flow-card {
+            position: relative;
+            width: min(560px, 100%);
+            max-height: min(90vh, 760px);
+            overflow-y: auto;
+            padding: 1.5rem;
+            border-radius: 24px;
+            background: #fff;
+            box-shadow: 0 20px 50px rgba(45, 45, 45, 0.2);
+        }
+
+        .checkout-field {
+            width: 100%;
+            min-height: 44px;
+            padding: 0.65rem 0.8rem;
+            border: 1px solid #d1d5db;
+            border-radius: 10px;
+            background: #fff;
         }
 
         html,
@@ -281,6 +323,48 @@
         </div>
     </div>
 
+    <div id="checkout-flow-modal" class="checkout-flow-modal" hidden>
+        <div class="checkout-flow-backdrop" data-checkout-flow-close></div>
+        <form id="checkout-form" class="checkout-flow-card" role="dialog" aria-modal="true"
+            aria-labelledby="checkout-flow-title">
+            <h2 id="checkout-flow-title" class="text-2xl font-bold text-dark mb-1">Delivery details</h2>
+            <p class="text-sm text-gray-500 mb-5">Choose where and when your order should be delivered.</p>
+
+            <label for="checkout-address" class="block text-sm font-semibold text-dark mb-2">Saved address</label>
+            <select id="checkout-address" class="checkout-field" aria-describedby="checkout-address-help"></select>
+            <p id="checkout-address-help" class="text-xs text-gray-500 mt-1">Or add a new delivery address below.</p>
+            <button id="toggle-new-address" type="button" class="text-sm text-primary font-semibold mt-3 hover:underline">
+                Add a new address
+            </button>
+
+            <fieldset id="new-address-fields" class="mt-4 grid sm:grid-cols-2 gap-3" hidden>
+                <legend class="text-sm font-semibold text-dark mb-2">New address</legend>
+                <input class="checkout-field" name="houseNumber" placeholder="House / flat number" autocomplete="address-line1">
+                <input class="checkout-field" name="blockNumber" placeholder="Block / apartment (optional)">
+                <input class="checkout-field sm:col-span-2" name="street" placeholder="Street / area" autocomplete="street-address" required>
+                <input class="checkout-field" name="city" placeholder="City" autocomplete="address-level2" required>
+                <input class="checkout-field" name="pincode" placeholder="PIN code" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" autocomplete="postal-code" required>
+                <label class="sm:col-span-2 flex items-center gap-2 text-sm text-gray-600">
+                    <input id="save-default-address" type="checkbox" class="accent-orange-500">
+                    Save this as my default address
+                </label>
+            </fieldset>
+
+            <label for="delivery-date" class="block text-sm font-semibold text-dark mt-4 mb-2">Delivery date</label>
+            <input id="delivery-date" class="checkout-field" type="date" required>
+
+            <p id="checkout-error" class="text-sm text-red-600 mt-4" role="alert" hidden></p>
+            <div class="mt-6 flex flex-col-reverse sm:flex-row sm:justify-end gap-3">
+                <button type="button" data-checkout-flow-close
+                    class="px-5 py-3 rounded-full bg-gray-100 text-dark font-semibold">Cancel</button>
+                <button id="checkout-submit" type="submit"
+                    class="px-5 py-3 rounded-full bg-primary text-white font-semibold hover:bg-primary/90">
+                    Continue to secure payment
+                </button>
+            </div>
+        </form>
+    </div>
+
     <!-- Footer -->
     <footer class="bg-dark text-white py-16">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -384,6 +468,7 @@
         }
 
         function saveCart(cart) {
+            pendingPayment = null;
             localStorage.setItem('cart', JSON.stringify(cart));
             updateCartBadge();
             renderCart();
@@ -479,8 +564,351 @@
             document.getElementById('total-price').textContent = `Rs ${subtotal}/-`;
         }
 
-        const RAZORPAY_PAYMENT_PAGE = 'https://pages.razorpay.com/pl_Tcjt9CwKb9pbxo/view';
+        const RAZORPAY_KEY_ID = 'rzp_live_SzRaV2QlZRrrm4';
         const checkoutAuthModal = document.getElementById('checkout-auth-modal');
+        const checkoutFlowModal = document.getElementById('checkout-flow-modal');
+        const checkoutForm = document.getElementById('checkout-form');
+        const checkoutAddressSelect = document.getElementById('checkout-address');
+        const newAddressFields = document.getElementById('new-address-fields');
+        const checkoutError = document.getElementById('checkout-error');
+        const checkoutSubmit = document.getElementById('checkout-submit');
+        let checkoutAddresses = [];
+        let razorpayScriptPromise = null;
+        let checkoutBusy = false;
+        let pendingPayment = null;
+
+        function showCheckoutError(message) {
+            checkoutError.textContent = message;
+            checkoutError.hidden = !message;
+        }
+
+        function getSessionToken() {
+            const session = window.SpicebloomsAuth && window.SpicebloomsAuth.get();
+            return session && session.token;
+        }
+
+        function setDeliveryDateDefaults() {
+            const dateInput = document.getElementById('delivery-date');
+            const tomorrow = new Date();
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            const localDate = [
+                tomorrow.getFullYear(),
+                String(tomorrow.getMonth() + 1).padStart(2, '0'),
+                String(tomorrow.getDate()).padStart(2, '0')
+            ].join('-');
+            dateInput.min = localDate;
+            if (!dateInput.value || dateInput.value < localDate) dateInput.value = localDate;
+        }
+
+        function setNewAddressMode(isNewAddress) {
+            newAddressFields.hidden = !isNewAddress;
+            checkoutAddressSelect.required = !isNewAddress;
+            newAddressFields.querySelector('[name="street"]').required = isNewAddress;
+            newAddressFields.querySelector('[name="city"]').required = isNewAddress;
+            newAddressFields.querySelector('[name="pincode"]').required = isNewAddress;
+            document.getElementById('toggle-new-address').textContent = isNewAddress
+                ? 'Choose a saved address'
+                : 'Add a new address';
+        }
+
+        function formatAddress(address) {
+            return [
+                address.houseNumber,
+                address.blockNumber,
+                address.street,
+                address.city,
+                address.pincode
+            ].filter(Boolean).join(', ');
+        }
+
+        async function openCheckoutFlow() {
+            showCheckoutError('');
+            const token = getSessionToken();
+            if (!token) {
+                showCheckoutError('Your sign-in session is not connected to the order service. Sign out and sign in again.');
+                checkoutFlowModal.hidden = false;
+                return;
+            }
+
+            try {
+                const result = await window.SpicebloomsApi.getAddresses(token);
+                checkoutAddresses = Array.isArray(result) ? result : [];
+                checkoutAddressSelect.replaceChildren();
+                checkoutAddresses.forEach(function (address) {
+                    if (!address.id) return;
+                    const option = document.createElement('option');
+                    option.value = address.id;
+                    option.textContent = formatAddress(address) || 'Saved delivery address';
+                    option.selected = !!address.isDefault;
+                    checkoutAddressSelect.appendChild(option);
+                });
+                const hasAddresses = checkoutAddressSelect.options.length > 0;
+                const placeholder = document.createElement('option');
+                placeholder.value = '';
+                placeholder.textContent = hasAddresses ? 'Select a delivery address' : 'Add a delivery address to continue';
+                placeholder.disabled = true;
+                if (!hasAddresses) placeholder.selected = true;
+                checkoutAddressSelect.insertBefore(placeholder, checkoutAddressSelect.firstChild);
+
+                setNewAddressMode(!hasAddresses);
+                document.getElementById('toggle-new-address').hidden = !hasAddresses;
+                document.getElementById('checkout-address-help').hidden = !hasAddresses;
+                checkoutAddressSelect.required = hasAddresses;
+                setDeliveryDateDefaults();
+                checkoutFlowModal.hidden = false;
+            } catch (error) {
+                console.error('Unable to load delivery addresses.', error);
+                showCheckoutError(error.message || 'Could not load your saved addresses. Please try again.');
+                setNewAddressMode(true);
+                document.getElementById('toggle-new-address').hidden = true;
+                document.getElementById('checkout-address-help').hidden = true;
+                checkoutFlowModal.hidden = false;
+            }
+        }
+
+        function loadRazorpayCheckout() {
+            if (window.Razorpay) return Promise.resolve();
+            if (!razorpayScriptPromise) {
+                razorpayScriptPromise = new Promise(function (resolve, reject) {
+                    const script = document.createElement('script');
+                    script.src = 'https://checkout.razorpay.com/v1/checkout.js';
+                    script.onload = resolve;
+                    script.onerror = function () {
+                        razorpayScriptPromise = null;
+                        reject(new Error('Unable to load Razorpay Checkout. Check your connection and try again.'));
+                    };
+                    document.head.appendChild(script);
+                });
+            }
+            return razorpayScriptPromise;
+        }
+
+        function normalizeOrderItemName(value) {
+            return String(value || '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+        }
+
+        async function getAllCatalogItems() {
+            const pageSize = 50;
+            const firstPage = await window.SpicebloomsApi.getCatalogItems({ page: 1, pageSize: pageSize });
+            if (!firstPage || !Array.isArray(firstPage.itemList)) {
+                throw new Error('The catalog returned an unexpected response. Please try again.');
+            }
+            const items = firstPage.itemList.slice();
+            const total = Number(firstPage.totalListCount);
+            const pageCount = Number.isFinite(total) && total > 0 ? Math.ceil(total / pageSize) : 1;
+            for (let page = 2; page <= pageCount; page += 1) {
+                const result = await window.SpicebloomsApi.getCatalogItems({ page: page, pageSize: pageSize });
+                if (!result || !Array.isArray(result.itemList)) {
+                    throw new Error('The catalog returned an unexpected response. Please try again.');
+                }
+                items.push(...result.itemList);
+            }
+            return items;
+        }
+
+        function findOrderCatalogItem(cartItem, catalogItems) {
+            if (cartItem.itemId) {
+                const byId = catalogItems.find(function (item) {
+                    return String(item.id || item.Id) === String(cartItem.itemId);
+                });
+                if (byId) return byId;
+            }
+
+            const requestedName = normalizeOrderItemName(cartItem.name);
+            const exactMatches = catalogItems.filter(function (item) {
+                return normalizeOrderItemName(item.itemName || item.ItemName) === requestedName;
+            });
+            if (exactMatches.length) return exactMatches[0];
+
+            const requestedTokens = requestedName.split(/\s+/).filter(Boolean);
+            let best = null;
+            let bestScore = 0;
+            let ambiguous = false;
+            catalogItems.forEach(function (item) {
+                const candidateTokens = normalizeOrderItemName(item.itemName || item.ItemName).split(/\s+/).filter(Boolean);
+                const shared = requestedTokens.filter(function (token) { return candidateTokens.includes(token); }).length;
+                const score = shared / Math.min(requestedTokens.length, candidateTokens.length);
+                if (shared >= 2 && score >= 0.75) {
+                    if (score > bestScore) {
+                        best = item;
+                        bestScore = score;
+                        ambiguous = false;
+                    } else if (score === bestScore && best && String(best.id || best.Id) !== String(item.id || item.Id)) {
+                        ambiguous = true;
+                    }
+                }
+            });
+            return ambiguous ? null : best;
+        }
+
+        function getNumericPrice(value) {
+            if (value === null || value === undefined || value === '') return null;
+            const price = Number(String(value).replace(/[^\d.]/g, ''));
+            return Number.isFinite(price) ? price : null;
+        }
+
+        async function buildOrderRequest(addressId, deliveryDate) {
+            const cart = getCart();
+            const catalogItems = await getAllCatalogItems();
+            const orderItems = cart.map(function (cartItem) {
+                const item = findOrderCatalogItem(cartItem, catalogItems);
+                if (!item) {
+                    throw new Error('“' + cartItem.name + '” is no longer available in the catalog. Remove it from your cart and add it again.');
+                }
+                const id = item.id || item.Id;
+                const price = getNumericPrice(item.actualPrice !== undefined ? item.actualPrice : item.ActualPrice);
+                const quantity = Number.parseInt(cartItem.quantity, 10);
+                if (!id || price === null || !Number.isInteger(quantity) || quantity < 1) {
+                    throw new Error('Catalog details for “' + cartItem.name + '” are incomplete. Please refresh your cart and try again.');
+                }
+                return {
+                    cartItem: cartItem,
+                    catalogItem: item,
+                    requestItem: {
+                        itemId: id,
+                        brandName: item.brandName || item.BrandName || '',
+                        itemName: item.itemName || item.ItemName || cartItem.name,
+                        itemQuantity: item.quantity || item.Quantity || '',
+                        imageUri: item.imageUri || item.ImageUri || cartItem.image || '',
+                        quantity: quantity,
+                        price: price
+                    }
+                };
+            });
+
+            const subTotal = orderItems.reduce(function (sum, entry) {
+                return sum + entry.requestItem.price * entry.requestItem.quantity;
+            }, 0);
+            const savings = orderItems.reduce(function (sum, entry) {
+                const oldPrice = getNumericPrice(entry.catalogItem.oldPrice !== undefined
+                    ? entry.catalogItem.oldPrice
+                    : entry.catalogItem.OldPrice);
+                return sum + (oldPrice !== null && oldPrice > entry.requestItem.price
+                    ? (oldPrice - entry.requestItem.price) * entry.requestItem.quantity
+                    : 0);
+            }, 0);
+
+            return {
+                deliveryAddressId: addressId,
+                deliveryDate: new Date(deliveryDate + 'T12:00:00').toISOString(),
+                items: orderItems.map(function (entry) { return entry.requestItem; }),
+                subTotal: subTotal,
+                serviceCharge: 0,
+                total: subTotal,
+                savings: savings
+            };
+        }
+
+        function startRazorpayPayment(order, token, session) {
+            if (!order || !order.orderId || !order.razorpayOrderId) {
+                throw new Error('The order service did not return a Razorpay order. Please contact support before retrying.');
+            }
+            if (RAZORPAY_KEY_ID.includes('REPLACE_WITH')) {
+                throw new Error('Razorpay Key ID is a placeholder. Add your Razorpay Key ID to cart.html to enable payment.');
+            }
+
+            const options = {
+                key: RAZORPAY_KEY_ID,
+                amount: Math.round(Number(order.amount) * 100),
+                currency: order.currency || 'INR',
+                name: 'SpiceBlooms',
+                description: order.description || 'SpiceBlooms order',
+                order_id: order.razorpayOrderId,
+                prefill: {
+                    name: (session.user && session.user.fullName) || session.name || '',
+                    email: (session.user && session.user.email) || session.email || '',
+                    contact: session.phone || (session.user && session.user.phone) || ''
+                },
+                theme: { color: '#FF6B35' },
+                handler: async function (payment) {
+                    try {
+                        await window.SpicebloomsApi.verifyOrderPayment(token, {
+                            orderId: order.orderId,
+                            razorpayPaymentId: payment.razorpay_payment_id,
+                            razorpayOrderId: payment.razorpay_order_id,
+                            razorpaySignature: payment.razorpay_signature
+                        });
+                        pendingPayment = null;
+                        localStorage.removeItem('cart');
+                        updateCartBadge();
+                        renderCart();
+                        checkoutFlowModal.hidden = true;
+                        alert('Payment verified and your order is confirmed.');
+                    } catch (error) {
+                        console.error('Unable to verify Razorpay payment.', error);
+                        checkoutFlowModal.hidden = false;
+                        showCheckoutError(error.message || 'Payment was received but could not be verified. Please contact support with order ID ' + order.orderId + '.');
+                    }
+                },
+                modal: {
+                    ondismiss: function () {
+                        checkoutFlowModal.hidden = false;
+                        showCheckoutError('Payment was not completed. Your order remains pending; retry by proceeding through checkout again.');
+                    }
+                }
+            };
+            const razorpay = new window.Razorpay(options);
+            razorpay.on('payment.failed', function (response) {
+                checkoutFlowModal.hidden = false;
+                const message = response && response.error && response.error.description;
+                showCheckoutError(message || 'Payment failed. Your order is still pending; please retry or contact support.');
+            });
+            checkoutFlowModal.hidden = true;
+            razorpay.open();
+        }
+
+        async function submitCheckout(event) {
+            event.preventDefault();
+            if (checkoutBusy) return;
+            checkoutBusy = true;
+            checkoutSubmit.disabled = true;
+            checkoutSubmit.textContent = 'Preparing secure payment…';
+            showCheckoutError('');
+
+            try {
+                const session = window.SpicebloomsAuth && window.SpicebloomsAuth.get();
+                const token = session && session.token;
+                if (!token) throw new Error('Your sign-in session has expired. Sign in again to continue.');
+                if (RAZORPAY_KEY_ID.includes('REPLACE_WITH')) {
+                    throw new Error('Razorpay Key ID is a placeholder. Add your Razorpay Key ID to cart.html before creating an order.');
+                }
+
+                await loadRazorpayCheckout();
+                if (pendingPayment) {
+                    startRazorpayPayment(pendingPayment.order, pendingPayment.token, pendingPayment.session);
+                    return;
+                }
+
+                let addressId = checkoutAddressSelect.value;
+                if (!newAddressFields.hidden) {
+                    const formData = new FormData(checkoutForm);
+                    const address = await window.SpicebloomsApi.createAddress(token, {
+                        houseNumber: String(formData.get('houseNumber') || '').trim(),
+                        blockNumber: String(formData.get('blockNumber') || '').trim(),
+                        street: String(formData.get('street') || '').trim(),
+                        city: String(formData.get('city') || '').trim(),
+                        pincode: String(formData.get('pincode') || '').trim(),
+                        isDefault: document.getElementById('save-default-address').checked || checkoutAddresses.length === 0
+                    });
+                    addressId = address && address.id;
+                }
+                if (!addressId) throw new Error('Select or add a delivery address before continuing.');
+
+                const deliveryDate = document.getElementById('delivery-date').value;
+                if (!deliveryDate) throw new Error('Choose a delivery date before continuing.');
+                const orderRequest = await buildOrderRequest(addressId, deliveryDate);
+                const order = await window.SpicebloomsApi.createOrder(token, orderRequest);
+                pendingPayment = { order: order, token: token, session: session };
+                startRazorpayPayment(order, token, session);
+            } catch (error) {
+                console.error('Checkout could not be started.', error);
+                showCheckoutError(error.message || 'Unable to start checkout. Please try again.');
+            } finally {
+                checkoutBusy = false;
+                checkoutSubmit.disabled = false;
+                checkoutSubmit.textContent = 'Continue to secure payment';
+            }
+        }
 
         function openCheckoutAuthModal() {
             if (!checkoutAuthModal) {
@@ -494,7 +922,7 @@
             if (checkoutAuthModal) checkoutAuthModal.hidden = true;
         }
 
-        function proceedToPayment() {
+        async function proceedToPayment() {
             const cart = getCart();
             if (cart.length === 0) {
                 alert('Your cart is empty!');
@@ -517,9 +945,7 @@
                 return;
             }
 
-            const paymentUrl = new URL(RAZORPAY_PAYMENT_PAGE);
-            paymentUrl.searchParams.set('amount', String(totalItems));
-            window.location.href = paymentUrl.toString();
+            await openCheckoutFlow();
         }
 
         if (checkoutAuthModal) {
@@ -527,6 +953,17 @@
                 el.addEventListener('click', closeCheckoutAuthModal);
             });
         }
+
+        document.getElementById('toggle-new-address').addEventListener('click', function () {
+            setNewAddressMode(newAddressFields.hidden);
+        });
+        checkoutForm.addEventListener('submit', submitCheckout);
+        checkoutFlowModal.querySelectorAll('[data-checkout-flow-close]').forEach(function (element) {
+            element.addEventListener('click', function () {
+                checkoutFlowModal.hidden = true;
+                showCheckoutError('');
+            });
+        });
 
         // Mobile menu toggle
         const mobileMenuButton = document.getElementById('mobile-menu-button');
@@ -563,4 +1000,3 @@
 </body>
 
 </html>
-

@@ -8,15 +8,27 @@
 
   let firebasePromise = null;
 
-  function writeSession(user) {
+  async function writeSession(user) {
     if (!window.SpicebloomsAuth || !user) return;
+    if (!window.SpicebloomsApi || typeof window.SpicebloomsApi.firebaseLogin !== "function") {
+      throw new Error("The SpiceBlooms API client is unavailable. Reload the page and try again.");
+    }
+    const firebaseIdToken = await user.getIdToken();
+    const apiSession = await window.SpicebloomsApi.firebaseLogin(firebaseIdToken);
+    if (!apiSession || !apiSession.token) {
+      throw new Error("Could not sign in to the SpiceBlooms service. Please try again.");
+    }
     window.SpicebloomsAuth.set({
       provider: "google",
       uid: user.uid,
       email: user.email || "",
       name: user.displayName || "",
       photo: user.photoURL || "",
-      at: Date.now()
+      at: Date.now(),
+      token: apiSession.token,
+      refreshToken: apiSession.refreshToken,
+      expiry: apiSession.expiry,
+      user: apiSession.user || {}
     });
   }
 
@@ -57,7 +69,7 @@
       const { auth, getRedirectResult } = await loadFirebase();
       const result = await getRedirectResult(auth);
       if (result && result.user) {
-        writeSession(result.user);
+        await writeSession(result.user);
         return result.user;
       }
       return null;
@@ -74,7 +86,7 @@
       }
       try {
         const result = await signInWithPopup(auth, provider);
-        writeSession(result.user);
+        await writeSession(result.user);
         return result.user;
       } catch (error) {
         const code = error && error.code;
