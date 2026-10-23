@@ -276,6 +276,10 @@ const server = http.createServer((req, res) => {
     return;
   }
 
+  if (pathname === "/spiceblooms-logo.svg") {
+    pathname = "/assets/spiceblooms-logo.svg";
+  }
+
   const filePath = path.normalize(path.join(root, pathname));
   if (!filePath.startsWith(root)) {
     res.writeHead(403);
